@@ -42,6 +42,23 @@ const formatTakenAt = (value) => {
 // names stay parallel; each stem runs down to its own peak.
 const labelBaseline = (peaks) => Math.min(...peaks.map((p) => p.y)) - 3;
 
+// True below Tailwind's md breakpoint; follows window resizes.
+const mobileQuery = "(max-width: 767px)";
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia(mobileQuery).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(mobileQuery);
+    const onChange = (e) => setIsMobile(e.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return isMobile;
+}
+
 export default function App() {
   return (
     <main className="bg-gray-50 text-stone-900">
@@ -119,7 +136,7 @@ function PanoramaSection({ pano }) {
         </p>
       </header>
 
-      <figure className="group relative h-[50dvh] overflow-hidden rounded-xl bg-stone-800 md:h-auto md:min-h-0 md:flex-1">
+      <figure className="group relative h-[65dvh] overflow-hidden rounded-xl bg-stone-800 md:h-auto md:min-h-0 md:flex-1">
         <div className="h-full overflow-x-auto overflow-y-hidden">
           <PanoramaImage pano={pano} />
         </div>
@@ -324,6 +341,7 @@ function MountainSection({ peak }) {
   })
 
   const translateContent = useTransform(scrollYProgress, [0, 0.5, 1], [0, 150, -150])
+  const isMobile = useIsMobile()
   const blur = useTransform(scrollYProgress,[0,0.5,1],[1,0,1])
   const filter = useMotionTemplate`blur(${blur}px)`
 
@@ -345,8 +363,8 @@ function MountainSection({ peak }) {
         {/* Left: image */}
 
         <motion.figure
-          style={{ y: translateContent }}
-          className="relative aspect-3/2 w-full max-w-lg justify-self-center overflow-hidden rounded-xl bg-stone-800">
+          style={{ y: isMobile ? 0 : translateContent }}
+          className="relative aspect-4/5 w-full max-md:mb-4 md:aspect-3/2 max-w-lg justify-self-center overflow-hidden rounded-xl bg-stone-800">
           <img
             src={peak.image}
             alt={`${peak.name}, Uttarakhand`}
