@@ -3,7 +3,7 @@ live links
 01 3d hover button : https://3d-hover-button-eta.vercel.app
 02 motion playground : https://motion-playground-wheat.vercel.app
 03 motion variants : https://motion-variants-xi.vercel.app
-04 motion hooks : https://motion-hooks.vercel.app
+04 motion hooks : https://uttarakhand-peaks.vercel.app
 
 what i learned 
 
