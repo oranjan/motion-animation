@@ -4,6 +4,7 @@ live links
 02 motion playground : https://motion-playground-wheat.vercel.app
 03 motion variants : https://motion-variants-xi.vercel.app
 04 motion hooks : https://uttarakhand-peaks.vercel.app
+05 layouts : https://most-streamed.vercel.app
 
 what i learned 
 
@@ -53,6 +54,8 @@ style : value follows live input like scroll , drag , cursor (continuous)
 animate : element goes to a new state like show/hide , hover , open/close (limited states)
 
 
+
+05 layouts (most streamed songs list , click a song to open its card)
 
 layoutId : name tag on a motion element
 when one element with a layoutId is removed and another with the same layoutId shows up , motion treats them as one element and animates it from old place to new place
