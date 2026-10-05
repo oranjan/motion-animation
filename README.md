@@ -51,3 +51,38 @@ setState here only rerenders when the value actually changes
 style vs animate
 style : value follows live input like scroll , drag , cursor (continuous)
 animate : element goes to a new state like show/hide , hover , open/close (limited states)
+
+
+
+layoutId : name tag on a motion element
+when one element with a layoutId is removed and another with the same layoutId shows up , motion treats them as one element and animates it from old place to new place
+in reality react removes the old one and adds a new one , motion just animates between them
+ie sliding pill in the nav menu → only the selected button renders the pill , all buttons use the same layoutId="region-pill" , so the pill slides to the clicked button
+ie song row → popup card , small cover and big cover have the same layoutId so the cover grows into the card
+different id = no connection , only one element with that id on screen at a time , and it has to be a motion element (plain div / article ignores layoutId)
+
+layout : when a parent animates its size (layoutId card shrinking back to the row) motion uses scale , that scale squishes the children too
+add layout to the children (rank , wrappers) → motion counter scales them so they keep their real shape
+
+AnimatePresence + exit : without it the popup just vanishes on close and only the layoutId parts fly back , looks weird
+AnimatePresence keeps the popup alive till the exit animation is done
+open : initial → animate , close : animate → exit
+give the child a key so it knows which one is leaving
+
+tween vs spring
+spring : physical , can bounce / overshoot
+tween : fixed duration + easing curve , stops exactly on target , no bounce
+ie transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }} → fast start , long soft landing (ios feel)
+sync the text colour with the same duration + curve (transition-colors duration-350) so the text changes with the pill not before it
+
+masking : mask is a stencil over the element
+black (any solid colour) = visible , transparent = hidden , in between = see through
+ie mask-[linear-gradient(to_top,transparent,black_80px)] → text fades out at the bottom
+opacity fades the whole element , mask fades it spot by spot
+put the mask on the scroll container not on the text , else the fade moves with the text and the last lines can never be read
+add padding same size as the fade (pb-14 for 56px fade) so the last line can scroll clear of it
+
+useClickOutside (custom hook) : close popup on click outside or esc
+listens on document , ref.current.contains(e.target) = click was inside
+pointerdown not click , so selecting text inside and releasing outside doesnt close it
+keep the latest callback in a ref → listeners added only once but always call the newest function , no add/remove listener on every render , no stale function
