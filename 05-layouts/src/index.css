@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Spotify palette from design.md */
+@theme {
+  --font-sans:
+    "Figtree", "Helvetica Neue", helvetica, arial, "Hiragino Sans", sans-serif;
+
+  --color-page: #121212;
+  --color-surface: #181818;
+  --color-elevated: #1f1f1f;
+  --color-highlight: #252525;
+  --color-silver: #b3b3b3;
+  --color-green: #1ed760;
+}
