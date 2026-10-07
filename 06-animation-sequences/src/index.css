@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  /* Harry's quick scrawl vs the diary's old-fashioned hand */
+  --font-harry: "Caveat", "Comic Sans MS", cursive;
+  --font-diary: "IM Fell English", Georgia, serif;
+
+  --color-desk: #1a120c;
+  --color-ink: #2a1d14;
+  --color-ink-faded: #4a3523;
+}
