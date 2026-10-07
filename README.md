@@ -5,6 +5,7 @@ live links
 03 motion variants : https://motion-variants-xi.vercel.app
 04 motion hooks : https://uttarakhand-peaks.vercel.app
 05 layouts : https://most-streamed.vercel.app
+06 animation sequences : https://riddle-diary-three.vercel.app
 
 what i learned 
 
@@ -89,3 +90,22 @@ useClickOutside (custom hook) : close popup on click outside or esc
 listens on document , ref.current.contains(e.target) = click was inside
 pointerdown not click , so selecting text inside and releasing outside doesnt close it
 keep the latest callback in a ref → listeners added only once but always call the newest function , no add/remove listener on every render , no stale function
+
+
+
+06 animation sequences (tom riddle's diary , harry's line then the diary's reply write in word by word)
+
+useAnimate : animate elements with a command instead of animate props on each element
+const [scope, animate] = useAnimate() , put ref={scope} on the parent
+animate('.word', { filter: "blur(0px)", y: 0 }, { duration: 0.3 }) → finds every .word inside scope only , not the whole page
+run it in useEffect so the elements are on the page first
+it only hits the elements that exist when it runs , anything added later stays at its start style till u run it again (add that state to the effect deps)
+
+stagger : delay: stagger(0.05) → 1st starts at 0 , 2nd at 0.05 , 3rd at 0.1 ... gives the writing effect
+stagger counts every matched element , even ones already done , so re running it on all words adds a lag before the new ones
+delay can be a function too (i, total) => stagger(0.05)(i, total) + extra , ie add a pause before a group
+
+split : "My name is Harry Potter.".split(" ") → ["My", "name", "is", "Harry", "Potter."]
+then .map each word into its own motion.span so each one can animate on its own
+split("") gives letters , but spaces become empty spans that collapse and lines can break mid word , so split words first then letters inside
+spans need inline-block else y / transform doesnt move them , mr-[0.25em] for the gap between words
