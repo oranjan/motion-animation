@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# local agent docs, only README is tracked
+*.md
+!README.md
