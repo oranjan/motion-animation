@@ -93,7 +93,7 @@ keep the latest callback in a ref → listeners added only once but always call 
 
 
 
-06 animation sequences (tom riddle's diary , harry's line then the diary's reply write in word by word)
+06 animation sequences (tom riddle's diary , harry's line then the diary's reply write in word by word + a pay now button that turns into a loader , a green circle and a tick)
 
 useAnimate : animate elements with a command instead of animate props on each element
 const [scope, animate] = useAnimate() , put ref={scope} on the parent
@@ -109,3 +109,30 @@ split : "My name is Harry Potter.".split(" ") → ["My", "name", "is", "Harry", 
 then .map each word into its own motion.span so each one can animate on its own
 split("") gives letters , but spaces become empty spans that collapse and lines can break mid word , so split words first then letters inside
 spans need inline-block else y / transform doesnt move them , mr-[0.25em] for the gap between words
+
+animate() vs animate prop
+animate prop : declarative , runs on mount or when its value changes on a rerender , needs state to trigger
+animate() from useAnimate : imperative , call it like a normal function whenever u want (onClick , useEffect , after await) , no rerender needed
+
+sequence : pass an array of steps to animate , each step is [target, values, options] , runs one after another
+ie animate([[".loader", { opacity: 1 }], ["span", { opacity: 0 }]])
+at : when a step starts
+"<" = same time as the previous step starts , "+0.2" = 0.2s after previous ends , "-0.1" = overlap the previous by 0.1s , 1 = at exactly 1s
+values object = only things to animate , options = duration , ease , at , type , delay
+putting delay or type inside the values object doesnt work , motion tries to animate them as properties
+
+hiding : opacity 0 only makes it invisible , it still takes space
+add display: "none" in the same step → fades first then gets removed from layout
+display: "block" + opacity 1 → shows up instantly then fades in
+
+units : keep the same unit on both ends inside a sequence ie "200px" → "80px"
+"200px" → "5rem" in a sequence makes motion use the numbers with rem → starts at 200rem , button gets huge before shrinking
+
+repeat: Infinity inside a sequence step gets ignored (spins only once) , for an endless spinner run a separate animate call before the sequence
+
+svg tick : pathLength 0 → 1 draws the line , path needs a stroke else nothing shows (fill none + no stroke = invisible)
+show the svg first (opacity) then draw the path , if both happen together it just looks like a fade
+on svg motion animates stroke as an attribute , so dont put stroke in style (inline style always beats the attribute → stays transparent)
+opacity and transform are fine in style
+
+guard the click with a ref (paid.current) so clicking again doesnt replay the sequence
